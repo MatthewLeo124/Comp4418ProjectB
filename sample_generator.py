@@ -48,7 +48,11 @@ class Generator():
         return result
         
 x = Generator("part")
-for i in x.generate_data(100):
-    print(i)
+f = open("sample_data.txt", "w")
 
-        
+for i in x.generate_data(100):
+    f.write(i)
+    f.write("\n")
+f.close()
+
+
