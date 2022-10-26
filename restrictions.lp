@@ -6,18 +6,19 @@
 % Constraints to satisfy:
 % Must have sufficient amount of each part required
     %Consider the case where we can pick multiple suppliers to add up to our wanted quantity if one doesnt have it.
+:- wanted(NAME, THRESHOLD, QUANTITY1), #sum{QUANTITY: pick(NAME, _, _, QUANTITY,_)} < QUANTITY1.
 
 % Cost of product must be less than given limit
     %Can't pick a supplier if supplier costs more than our limit
-:- pick(NAME, SIZE, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, QUANTITY1), THRESHOLD > COST.
+:- pick(NAME, SIZE, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, QUANTITY1), THRESHOLD < COST.
 
 %Throw away models that don't pick what we want
-:- not pick(NAME, SIZE, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, QUANTITY1).
+% Don't know if this is necessary
+% :- not pick(NAME, SIZE, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, QUANTITY1).
 
 % Can only contain allowed locations
 
 % Minimise cost
-
 
 %Discard models containing items we havent picked. pick(pipe a), model(pipe B) will be discarded
 % :- pick(NAME, SIZE, COST, QUANTITY, LOCATION), not wanted(NAME, THRESHOLD, QUANTITY1).
