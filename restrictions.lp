@@ -10,11 +10,13 @@
 
 % Cost of product must be less than given limit
     %Can't pick a supplier if supplier costs more than our limit
-:- pick(NAME, SIZE, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, QUANTITY1), THRESHOLD < COST.
+% :- wanted(NAME, THRESHOLD, QUANTITY1), TP = #sum{COST/QUANTITY: pick(NAME, _, COST, QUANTITY, _)},
+%     CP = #count{COST/QUANTITY: pick(NAME, _, COST, QUANTITY, _)}, TP > THRESHOLD/QUANTITY1*CP.
+:- wanted(NAME, THRESHOLD, QUANTITY1), #min{COST/QUANTITY: pick(NAME, _, COST, QUANTITY, _)} > THRESHOLD/QUANTITY1.
 
 %Throw away models that don't pick what we want
 % Don't know if this is necessary
-% :- not pick(NAME, SIZE, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, QUANTITY1).
+% :- pick(NAME, _, _, _, _), wanted(NAME1, _, _), NAME!=NAME1.
 
 % Can only contain allowed locations
 
