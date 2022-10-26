@@ -4,14 +4,13 @@
 
 % Constraints to satisfy:
 % Must have sufficient amount of each part required
-:- pick(NAME, COST, QUANTITY, LOCATION), QUANTITY < threshold(X).
+    %Consider the case where we can pick multiple suppliers to add up to our wanted quantity if one doesnt have it.
+
 
 % Cost of product must be less than given limit
     %Can't pick a supplier if supplier costs more than our limit
 :- pick(NAME, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, WQUANTITY), THRESHOLD < COST.
-    %Can't pick a supplier if they don't have enough
-    %Can figure out logic to choose both this and another supplier to add together to make the wanted quantity (WQUANTITY)
-:- pick(NAME, COST, QUANTTIY, LOCATION), wanted(NAME, THRESHOLD, WQUANTITY), WQUANTITY > QUANTITY.
+
 
 
 % Can only contain allowed locations
