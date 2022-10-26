@@ -11,7 +11,8 @@
     %Can't pick a supplier if supplier costs more than our limit
 :- pick(NAME, SIZE, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, QUANTITY1), THRESHOLD > COST.
 
-
+%Throw away models that don't pick what we want
+:- not pick(NAME, SIZE, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, QUANTITY1).
 
 % Can only contain allowed locations
 
