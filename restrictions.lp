@@ -11,13 +11,19 @@
 :- wanted(NAME, _, QUANTITYWANTED), T = #sum{QUANTITY: pick(NAME, _, _, QUANTITY,_)}, T < QUANTITYWANTED.
 
 % Constraint 2: Cost of product must be less than given limit
-    %Can't pick a supplier if supplier costs more than our limit
-        %:- wanted(NAME, THRESHOLD, _), T = #sum{QUANTITY * COST: pick(NAME, _, COST, QUANTITY,_)}, T > THRESHOLD.
+    %Struggles trying to figure out how much from each supplier is taken
+        %Make sure the individual cost is < our maximum individual unit cost in wanted.
+%Matt's broken answer to constraint 2
+%:- wanted(NAME, THRESHOLD, WANTEDQUANTITY), N = #sum{COST: pick(NAME, _, COST, _, _)}, 
+%    D = #count{COST1/QUANTITY: pick(NAME, _, COST1, QUANTITY, _)}, N/D > THRESHOLD/WANTEDQUANTITY.
 
+%Zezhou's answer to constraint 2
+        %Answer 1
         %:- wanted(NAME, THRESHOLD, QUANTITY1), TP = #sum{COST/QUANTITY: pick(NAME, _, COST, QUANTITY, _)},
         %     CP = #count{COST/QUANTITY: pick(NAME, _, COST, QUANTITY, _)}, TP > THRESHOLD/QUANTITY1*CP.
 
-        %:- wanted(NAME, THRESHOLD, QUANTITY1), #min{COST/QUANTITY: pick(NAME, _, COST, QUANTITY, _)} > THRESHOLD/QUANTITY1.
+        %Answer 2
+        :- wanted(NAME, THRESHOLD, QUANTITY1), #min{COST/QUANTITY: pick(NAME, _, COST, QUANTITY, _)} > THRESHOLD/QUANTITY1.
 
 % Constraint 3: Can only contain allowed locations
 
@@ -29,3 +35,4 @@ totalPrice(T) :- T = #sum {COST*QUANTITY : pick(NAME, _, COST, _, LOCATION), wan
 
 %#show wanted/3.
 #show pick/5.
+
