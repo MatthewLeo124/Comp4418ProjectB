@@ -1,1 +1,4 @@
-
+wanted(gear, 5000, 20).
+wanted(motor, 8000, 80).
+wanted(wire, 4000, 50).
+wanted(bolt, 6000, 100).
