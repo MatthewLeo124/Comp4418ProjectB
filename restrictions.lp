@@ -1,6 +1,6 @@
+#include "data.txt".
 
-
-{pick(NAME, COST, QUANTITY, LOCATION) : part(NAME, COST, QUANTITY, LOCATION)}.
+1 {pick(NAME, SIZE, COST, QUANTITY, LOCATION) : part(NAME, SIZE, COST, QUANTITY, LOCATION)} 2.
 
 % Constraints to satisfy:
 % Must have sufficient amount of each part required
@@ -9,7 +9,7 @@
 
 % Cost of product must be less than given limit
     %Can't pick a supplier if supplier costs more than our limit
-:- pick(NAME, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, WQUANTITY), THRESHOLD < COST.
+:- pick(NAME, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, QUANTITY), THRESHOLD < COST.
 
 
 
@@ -24,3 +24,6 @@
 %Minimise shipping cost, as well as total part cost
 %Minimise shipping time
 %Discard models that take too long to ship out (longer than 3 months? or user defined limit)
+
+
+#show pick/5.
