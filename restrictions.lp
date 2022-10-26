@@ -7,10 +7,9 @@
 % Must have sufficient amount of each part required
     %Consider the case where we can pick multiple suppliers to add up to our wanted quantity if one doesnt have it.
 
-
 % Cost of product must be less than given limit
     %Can't pick a supplier if supplier costs more than our limit
-:- pick(NAME, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, QUANTITY), THRESHOLD < COST.
+:- pick(NAME, SIZE, COST, QUANTITY, LOCATION), wanted(NAME, THRESHOLD, QUANTITY1), THRESHOLD > COST.
 
 
 
@@ -20,11 +19,11 @@
 
 
 %Discard models containing items we havent picked. pick(pipe a), model(pipe B) will be discarded
-:- pick(NAME, COST, QUANTITY, LOCATION), not wanted(NAME, THRESHOLD, QUANTITY).
+% :- pick(NAME, SIZE, COST, QUANTITY, LOCATION), not wanted(NAME, THRESHOLD, QUANTITY1).
 
 %Minimise shipping cost, as well as total part cost
 %Minimise shipping time
 %Discard models that take too long to ship out (longer than 3 months? or user defined limit)
 
-
+#show wanted/3.
 #show pick/5.
