@@ -53,7 +53,7 @@ class Generator():
         location = random.choice(["australia", "usa", "switzerland", "japan"])
         cost = str(random.randint(500, 10000))
         quantity = str(random.randint(0, 500))
-        return [name, quantity, cost,location]
+        return [name, 'n', quantity, cost,location]
 
 x = Generator("part")
 
