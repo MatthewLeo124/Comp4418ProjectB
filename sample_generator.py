@@ -13,7 +13,6 @@ class Generator():
     def generate_row(self):
         data = []
         randInt = random.randint(1, 100)
-        print(randInt)
         if randInt % 20 == 0:
             data = self.generate_trinket()
         else:
