@@ -1,4 +1,5 @@
 #include "data.txt".
+#include "wanted.txt".
 
 1 {pick(NAME, SIZE, COST, QUANTITY, LOCATION) : part(NAME, SIZE, COST, QUANTITY, LOCATION)} 2.
 
