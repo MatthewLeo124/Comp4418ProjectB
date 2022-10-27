@@ -1,38 +1,53 @@
-#include "sample_data.txt".
-#include "wanted.txt".
-
+% Generator
 1 {pick(NAME, SIZE, COST, QUANTITY, LOCATION) : part(NAME, SIZE, COST, QUANTITY, LOCATION)}.
+
+% Helper predicates
+%Total price of the supplier picked, e.g. Supplier a 100 bolts at $20, unit(a, )
+unit(X, T) :- wanted(X, _, _), T = #sum{QUANTITY, COST: pick(X, _, COST, QUANTITY, _)}.
 
 :- pick(NAME, _, _, _, _), not wanted(NAME, _, _).
 
+%Calculate the supply of something left over from what we want to buy and the total amount the supplier has.
+%E.g. we want 500 bolts, supplier A has 200, supplier B has 1000
+% This predicate will return 700
+exceed(NAME, QUANT) :- wanted(NAME, _, QUANTWANTED),
+unit(NAME, QUANTHAVE),
+QUANTMAX = #max{QUANTITY, COST: pick(NAME, _, COST, QUANTITY, _)},
+pick(NAME, _, _, QUANTMAX, _),
+QUANT = QUANTHAVE - QUANTWANTED, 
+QUANT>=0,
+QUANT<=QUANTMAX.
+
+%We must calculate the exceeded amount for every item that we want.
+:- wanted(NAME, _, _), not exceed(NAME, _).
+
+%Calculate the $ amount to remove from the final price.
+refund(NAME, AMOUNT) :- exceed(NAME, QUANT), 
+PRICE = #max{COST: pick(NAME, _, COST, QUANTITY, _), QUANT <= QUANTITY}, 
+pick(NAME, _, PRICE, _, _), 
+AMOUNT = PRICE*QUANT.
+
+%Total price of all suppliers and their costs from what we pick.
+price(NAME, AMOUNT) :- wanted(NAME, _, _),
+AMOUNT = #sum{COST*QUANTITY: pick(NAME, _, COST, QUANTITY, _)}.
+
 % Constraints to satisfy:
 % Constraint 1: Must have sufficient amount of each part required
-    %Consider the case where we can pick multiple suppliers to add up to our wanted quantity if one doesnt have it.
-:- wanted(NAME, _, QUANTITYWANTED), T = #sum{QUANTITY: pick(NAME, _, _, QUANTITY,_)}, T < QUANTITYWANTED.
+:- wanted(NAME, _, QUANTITYWANTED), unit(NAME, T), T < QUANTITYWANTED.
 
-% Constraint 2: Cost of product must be less than given limit
-    %Struggles trying to figure out how much from each supplier is taken
-        %Make sure the individual cost is < our maximum individual unit cost in wanted.
-%Matt's broken answer to constraint 2
-%:- wanted(NAME, THRESHOLD, WANTEDQUANTITY), N = #sum{COST: pick(NAME, _, COST, _, _)}, 
-%    D = #count{COST1/QUANTITY: pick(NAME, _, COST1, QUANTITY, _)}, N/D > THRESHOLD/WANTEDQUANTITY.
-
-%Zezhou's answer to constraint 2
-        %Answer 1
-        %:- wanted(NAME, THRESHOLD, QUANTITY1), TP = #sum{COST/QUANTITY: pick(NAME, _, COST, QUANTITY, _)},
-        %     CP = #count{COST/QUANTITY: pick(NAME, _, COST, QUANTITY, _)}, TP > THRESHOLD/QUANTITY1*CP.
-
-        %Answer 2
-        :- wanted(NAME, THRESHOLD, QUANTITY1), #min{COST/QUANTITY: pick(NAME, _, COST, QUANTITY, _)} > THRESHOLD/QUANTITY1.
+% Constraint 2: Total price for each wanted part must be less or equal to threshold
+:- wanted(NAME, THRESHOLD, _), refund(NAME, AMOUNT), price(NAME, TP), TP - AMOUNT > THRESHOLD.
 
 % Constraint 3: Can only contain allowed locations
+:- pick(NAME, SIZE, COST, QUANTITY, LOCATION), banned(LOCATION).
 
 % Constraint 4: Minimise cost
-    %How to represent an unknown fraction of each pick to optimise for?
-    %For basic examples this work, shouldn't be too hard to break though.
-totalPrice(T) :- T = #sum {COST*QUANTITY : pick(NAME, _, COST, _, LOCATION), wanted(NAME, _, QUANTITY)}.
-#minimise {T: totalPrice(T)}.
+maxPrice(P) :- P = #sum{COST*QUANTITY : part(NAME, _, COST, QUANTITY, LOCATION), wanted(NAME, _, _)}.
+totalPrice(T) :- maxPrice(P), T = #sum{COST*QUANTITY : pick(NAME, _, COST, QUANTITY, LOCATION)}, T <= P.
+totalRefund(R) :- maxPrice(P), R = #sum{AMOUNT : refund(NAME, AMOUNT)}, R <= P.
+finalPrice(P) :- totalPrice(T), totalRefund(R), T > R, P = T - R.
+#minimise {P: finalPrice(P)}.
 
-%#show wanted/3.
+#show wanted/3.
 #show pick/5.
-
+#show finalPrice/1.
