@@ -1,0 +1,24 @@
+In main branch:
+
+1. line 8, unit
+If 2 cases have same quantity and cost, the total sum is incorrect (less),
+bcz same quantity and cost account for 1 stuff in #sum.
+So we should not use anonyous variable here.
+(But if accidently all parameters are the same, we need an unique ID) (consider if necessary)
+
+2.
+same things happen on line 34, line 47, line 48, with #sum and pick
+if cost*quantity has identical value, the sum only account for once.
+
+3.
+It seem that it really has bug for multiple wanted.
+maxPrice, totalPrice... should have the parameter NAME, otherwise chaos.
+using the data:
+part(pipe,m,30,70,usa).
+part(pipe,s,36,90,usa).
+part(gear,s,30,70,usa).
+part(gear,s,36,90,usa).
+
+wanted(pipe, 100000, 80).
+wanted(gear, 100000, 80).
+banned(australia).
