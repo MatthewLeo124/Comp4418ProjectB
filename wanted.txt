@@ -1,7 +1,0 @@
-wanted(thermometer, 10000, 250).
-%wanted(gear, 10000, 90).
-%wanted(motor, 8000, 80).
-%wanted(wire, 10000, 250).
-%wanted(bolt, 6000, 100).
-%wanted(chemicals, 6000, 100).
-%wanted(phmeter, 100, 6000).

@@ -1,3 +1,5 @@
+#include "SampleData1.lp".
+
 % Generator
 1 {pick(NAME, SIZE, COST, QUANTITY, LOCATION) : part(NAME, SIZE, COST, QUANTITY, LOCATION)}.
 
