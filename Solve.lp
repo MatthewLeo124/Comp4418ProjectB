@@ -3,7 +3,6 @@
 
 % Helper predicates
 %Total price of the supplier picked, e.g. Supplier a 100 bolts at $20, unit(a, )
-%unit(X, T) :- wanted(X, _, _), T = #sum{QUANTITY, COST, COMPANY: pick(X, COMPANY, COST, QUANTITY, _)}.
 unit(X, T) :- wanted(X, _, _), T = #sum{QUANTITY, COMPANY, COST, LOCATION: pick(X, COMPANY, COST, QUANTITY, LOCATION)}.
 
 %Calculate the supply of something left over from what we want to buy and the total amount the supplier has.
