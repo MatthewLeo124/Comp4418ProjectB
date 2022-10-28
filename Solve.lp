@@ -1,5 +1,3 @@
-#include "SampleData2.lp".
-
 % Generator
 1 {pick(NAME, COMPANY, COST, QUANTITY, LOCATION) : part(NAME, COMPANY, COST, QUANTITY, LOCATION)}.
 
