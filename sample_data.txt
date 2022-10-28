@@ -38,9 +38,3 @@ part(dO2sensor,u_comp,48,144,ukraine).
 part(flowmeter,u_comp,48,118,ukraine).
 part(turbmeter,u_comp,95,131,ukraine).
 part(algaesensor,u_comp,31,8,ukraine).
-
-
-wanted(thermometer, 1000, 3).
-wanted(ionprobe, 1000, 3).
-banned(russia).
-banned(ukraine).
